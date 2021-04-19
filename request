@@ -1,0 +1,7 @@
+
+import requests
+
+url = 'http://localhost:5000/predict_api'
+r = requests.post(url,json={'HIGH':10, 'LOW':10, 'VOLUME':10,'OPEN':10})
+
+print(r.json())
