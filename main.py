@@ -1,28 +1,26 @@
-# importing necessary libraries and functions
+import numpy as np
+from flask import Flask, request, jsonify, render_template
 import pickle
 
-import numpy as np
-from flask import Flask, jsonify, render_template, request
+app = Flask(__name__)
+model = pickle.load(open('model.pkl', 'rb'))
 
-
-app = Flask(__name__)  # Initialize the flask App
-
-@app.route('/')  # Homepage
+@app.route('/')
 def home():
-    return render_template('home.html')
+    return render_template('index.html')
 
-
-@app.route('/predict', methods=['GET', 'POST'])
+@app.route('/predict',methods=['POST'])
 def predict():
-    model=open('/home/yifan_li/StockApp/stock_model.pkl','rb')
+    '''
+    For rendering results on HTML GUI
+    '''
+    int_features = [int(x) for x in request.form.values()]
+    final_features = [np.array(int_features)]
+    prediction = model.predict(final_features)
 
-    # retrieving values from form
-    if request.method=='POST': 
-        user_features=request.form.get('prediction')
-        user_input=[np.array(user_features)]
-        prediction=model.predict([[user_input]])
-        print(prediction)
-    return render_template ('output.html')
+    output = round(prediction[0], 2)
+
+    return render_template('index.html', prediction_text='Prediction should be $ {}'.format(output))
 
 
 if __name__ == "__main__":
