@@ -6,7 +6,7 @@ from sklearn.model_selection import train_test_split
 import pickle
 
 # Reading the data
-df = pd.read_csv(r'/Users/yifanli/Downloads/netflix.csv')
+df = pd.read_csv(r'https://raw.githubusercontent.com/yifan626/stock_basic_/main/netflix.csv')
 print(df.head())
 used_features = ["High", "Low", "Open", "Volume"]
 X = df[used_features]
